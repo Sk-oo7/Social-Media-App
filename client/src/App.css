@@ -23,3 +23,8 @@
 .item {
   width: 30%;
 }
+.home-card {
+  max-width: 30%;
+  height: max-content;
+  margin: 20px auto;
+}
