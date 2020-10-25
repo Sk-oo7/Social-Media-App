@@ -1,16 +1,44 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState } from 'react'
+import { Link,useHistory } from 'react-router-dom'
 import "../../App.css"
+import M from "materialize-css"
 
-function SignUn() {
+function SignUp() {
+    const history = useHistory()
+    const [name,setName]=useState("");
+    const [password,setPassword]=useState("");
+    const [email,setEmail]=useState("");
+
+    const postData=()=>{
+        fetch("/signup",{
+            method:"post",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({
+                name,
+                password,
+                email
+            })
+        }).then(res=>res.json())
+        .then(data=>{
+            if(data.error)
+            M.toast({html: data.error,classes:"#ef5350 red lighten-1"})
+            else{
+                M.toast({html: data.message,classes:"#26a69a teal lighten-1"})
+                history.push("/signin")
+            }
+        })
+    }
+
     return (
         <div className="mycard">
             <div className="card auth-card input-field">
                 <h2 className="brand-logo">Fleet</h2>
-                <input type='text' placeholder="name" />
-                <input type='email' placeholder="email" />
-                <input type='password' placeholder="password" />
-                <button className="btn waves-effect waves-light blue darken-3" >SignIn
+                <input type='text' placeholder="name" value={name} onChange={(e)=>setName(e.target.value)} />
+                <input type='email' placeholder="email" value={email} onChange={(e)=>setEmail(e.target.value)} />
+                <input type='password' placeholder="password" value={password} onChange={(e)=>setPassword(e.target.value)} />
+                <button className="btn waves-effect waves-light blue darken-3" onClick={postData}>SignIn
                 </button>
                 <h5><Link to="/signin">Have an Account?</Link></h5>
             </div>
@@ -18,4 +46,4 @@ function SignUn() {
     )
 }
 
-export default SignUn
+export default SignUp
