@@ -10,6 +10,10 @@ function SignUp() {
     const [email,setEmail]=useState("");
 
     const postData=()=>{
+        if(email!=="" && password!=="" && name!=="" && !/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email)){
+            M.toast({html: "Invalid email",classes:"#ef5350 red lighten-1"})
+            return
+        }
         fetch("/signup",{
             method:"post",
             headers:{
@@ -28,6 +32,9 @@ function SignUp() {
                 M.toast({html: data.message,classes:"#26a69a teal lighten-1"})
                 history.push("/signin")
             }
+        })
+        .catch(err=>{
+            console.log(err)
         })
     }
 

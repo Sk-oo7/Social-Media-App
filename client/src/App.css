@@ -25,6 +25,7 @@
 }
 .home-card {
   max-width: 30%;
+  min-width: 200px;
   height: max-content;
   margin: 20px auto;
 }
