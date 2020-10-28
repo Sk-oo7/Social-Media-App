@@ -15,7 +15,7 @@ function SignIn() {
         fetch("/signin",{
             method:"post",
             headers:{
-                "Content-Type":"application/json"
+                "Content-Type":"application/json",
             },
             body:JSON.stringify({
                 password,
@@ -27,6 +27,8 @@ function SignIn() {
             if(data.error)
             M.toast({html: data.error,classes:"#ef5350 red lighten-1"})
             else{
+                localStorage.setItem("jwt",data.token)
+                localStorage.setItem("user",JSON.stringify(data.user))
                 M.toast({html: "Successfully Signed In",classes:"#26a69a teal lighten-1"})
                 history.push("/")
             }
