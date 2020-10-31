@@ -1,15 +1,21 @@
 import React, { useState,useContext } from 'react'
-import { Link } from 'react-router-dom'
+import { Link,useHistory } from 'react-router-dom'
 import {UserContext} from "../App"
 import "../App.css"
 
 function Navbar() {
+  const history = useHistory();
   const {state,dispatch} = useContext(UserContext)
 
   const renderList =()=>{
     if(state){
       return [
-        <li><Link to="/profile">Profile</Link></li>
+        <li><Link to="/profile">Profile</Link></li>,
+        <li><a className="btn #0d47a1 blue darken-4" onClick={()=>{
+          localStorage.clear()
+          dispatch({type:"CLEAR"})
+          history.push("/signin")
+        }}>Logout</a></li>
       ]
     }
     else{
@@ -20,7 +26,12 @@ function Navbar() {
   const renderList2 =()=>{
     if(state){
       return [
-        <li><Link to="/profile"><span className="blue-text text-darken-2">Profile</span></Link></li>
+        <li><Link to="/profile"><span className="blue-text text-darken-2">Profile</span></Link></li>,
+        <li><a className="btn #0d47a1 blue darken-4" onClick={()=>{
+          localStorage.clear()
+          dispatch({type:"CLEAR"})
+          history.push("/signin")
+        }}>Logout</a></li>
       ]
     }
     else{
