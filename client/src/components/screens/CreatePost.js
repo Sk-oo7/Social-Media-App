@@ -57,7 +57,7 @@ function CreatePost() {
     }
 
     return (
-        <div className="card input-filed" style={{margin:"10px auto", maxWidth:"30%", minWidth:"200px", padding:"20px", textAlign:"center"}}>
+        <div className="card input-field" style={{margin:"10px auto", maxWidth:"30%", minWidth:"200px", padding:"20px", textAlign:"center"}}>
             <input type="text" placeholder="Title" value={title} onChange={(e)=>{setTitle(e.target.value)}} />
             <input type="text" placeholder="Body" value={body} onChange={(e)=>{setBody(e.target.value)}} />
             <div className="file-field input-field">
