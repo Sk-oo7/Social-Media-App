@@ -6,13 +6,17 @@ import M from "materialize-css"
 function Post(item) {
 
     const [lcount,setLcount]=useState(item.item.likes?.length);
-    const [showload,setShowload]=useState(false);
+    const [showload,setShowload]=useState(true);
     const{state} = useContext(UserContext)
     const [show,setShow]=useState(item.item.likes.some(likes=>likes.postedBy == state._id))
-    const [cls,setCls]=useState("");
+
 
     const [data,setData] = useState([]);
+    const [cmt,setCmt] = useState([]);
     useEffect(()=>{
+        setTimeout(()=>{
+            setShowload(false)
+        },1000)
         fetch("/allpost",{
             headers:{
                 "Authorization":"Bearer "+localStorage.getItem("jwt")
@@ -27,25 +31,6 @@ function Post(item) {
             let elems = document.querySelectorAll(".collapsible");
             M.Collapsible.init(elems);
     })
-
-     useEffect(() => {
-        let value = localStorage.getItem("sidebar-scroll");
-        let itm = localStorage.getItem("item");
-        
-        setShowload(true)
-        setTimeout(() => {
-            setShowload(false)
-            if (value !== null) {
-                window.scrollTo(0,value);
-                localStorage.setItem("sidebar-scroll", null);
-                localStorage.setItem("item", null);
-                if(item.item._id == itm){
-                    setCls("active")
-                }
-            }
-          }, 500); 
-          setCls("")
-    },[])
 
     const likePost = (id)=>{
         setLcount(lcount+1)
@@ -124,9 +109,7 @@ function Post(item) {
         }).catch(err=>{
             console.log(err)
         })
-        localStorage.setItem("sidebar-scroll", window.scrollY);
-        localStorage.setItem("item",item.item._id);
-        window.location.reload(false);
+        cmt.push(text); 
   }
 
     if(showload)
@@ -146,22 +129,31 @@ function Post(item) {
                                 <h6>{item.item.title}</h6>
                                 <p>{item.item.body}</p>
                                 <ul className="collapsible">
-                                <li className={cls}>
+                                <li>
                                 <div className="collapsible-header"><i className="material-icons">comment</i>Comments</div>
                                 <div className="collapsible-body"><span>  
-                                <form onSubmit={(e)=>{
-                                    e.preventDefault()
-                                    makeComment(e.target[0].value,item.item._id)
-                                }}>
-                                    <input className="input-field" type="text" placeholder="Add Comment" />
-                                </form>{
+                                {
                                     item.item.comments.map(record=>{
                                         return <h6 key={record._id}> 
                                             <b>{record.postedBy.name} </b>
                                             <span>{record.text}</span>
                                         </h6>
                                     })
-                                }</span></div>
+                                }{
+                                    cmt.map(txt=>
+                                        <h6> 
+                                            <b>{state.name} </b>
+                                            <span>{txt}</span>
+                                        </h6>
+                                    )
+                                }
+                                <form onSubmit={(e)=>{
+                                    e.preventDefault()
+                                    makeComment(e.target[0].value,item.item._id)
+                                    e.target.reset()
+                                }}>
+                                    <input className="input-field" type="text" placeholder="Add Comment" />
+                                </form></span></div>
                                 </li>
                                 </ul>
                                

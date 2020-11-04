@@ -8,15 +8,15 @@ function Home() {
     const [data,setData] = useState([]);
 
     useEffect(()=>{
-        fetch("/allpost",{
-            headers:{
-                "Authorization":"Bearer "+localStorage.getItem("jwt")
-            }
-        }).then(res=> res.json())
-        .then(result=>{
-            console.log(result)
-            setData(result.posts)
-        })
+                    fetch("/allpost",{
+                    headers:{
+                        "Authorization":"Bearer "+localStorage.getItem("jwt")
+                    }
+                }).then(res=> res.json())
+                .then(result=>{
+                    console.log(result)
+                    setData(result.posts)
+                })
     },[])
 
     return (
