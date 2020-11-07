@@ -47,11 +47,29 @@ function Profile() {
                 src="https://images.unsplash.com/photo-1542103749-8ef59b94f47e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
                 alt="" /></div>
                 <div>
+                    <center>
                     <h4>{state?.name}</h4>
-                    <div style={{display:"flex",justifyContent:"space-between"}}>
-                    <div><h6>10 posts &nbsp;</h6></div>
-                    <div><h6>100 followers &nbsp;</h6></div> 
-                    <div><h6>102 following &nbsp;</h6></div> 
+                    </center>
+                    <div style={{display:"flex",justifyContent:"space-between" , textAlign:"center", minWidth:"160px"}}>
+
+                                <div style={{display:"flex",flexDirection:"column",textAlign:"center"}}>
+
+                                <div style={{marginBottom:"-5px"}}><b>{pics?pics?.length:0}</b></div>
+                                    <div>posts&nbsp; &nbsp;</div>
+
+                                </div>
+                                <div style={{display:"flex",flexDirection:"column",textAlign:"center"}}>
+
+                                    <div style={{marginBottom:"-5px"}}><b>{state?.followers?.length}</b></div>
+                                    <div>followers&nbsp; &nbsp;</div>
+
+                                </div>
+                                <div style={{display:"flex",flexDirection:"column",textAlign:"center"}}>
+
+                                    <div style={{marginBottom:"-5px"}}><b>{state?.following?.length}</b></div>
+                                    <div>following</div>
+
+                                </div>
                     </div>
                 </div>
                 

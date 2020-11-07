@@ -6,9 +6,9 @@ import { WaveLoading  } from 'react-loadingg';
 
 function Profile() {
     const [userProfile,setProfile]=useState(null);
-    const {state}=useContext(UserContext);
+    const [showFollow,setShowFollow]=useState(true);
+    const {state,dispatch}=useContext(UserContext);
     const {userid} = useParams()
-
 
     useEffect(() => {
        fetch(`/user/${userid}`,{
@@ -25,6 +25,65 @@ function Profile() {
         var elems = document.querySelectorAll('.modal');
         M.Modal.init(elems,{startingTop:20,endingTop:20});
     })
+
+    const followUser=()=>{
+        fetch("/follow",{
+            method:"put",
+            headers:{
+                "Content-Type":"application/json",
+                "Authorization":"Bearer "+localStorage.getItem("jwt")
+            },
+            body:JSON.stringify({
+                followId:userid
+            })
+        }).then(res=>res.json())
+        .then(data=>{
+            console.log(data)
+            dispatch({type:"UPDATE",payload:{following:data.following,followers:data.followers}})
+            localStorage.setItem("user",JSON.stringify(data))
+            setProfile((prevState)=>{
+                return {
+                    ...prevState,
+                    user:{
+                        ...prevState.user,
+                        followers:[...prevState.user.followers,data._id]
+                    }
+                }
+            })
+            setShowFollow(!showFollow)
+        })
+    }
+    const unfollowUser=()=>{
+        fetch("/unfollow",{
+            method:"put",
+            headers:{
+                "Content-Type":"application/json",
+                "Authorization":"Bearer "+localStorage.getItem("jwt")
+            },
+            body:JSON.stringify({
+                unfollowId:userid
+            })
+        }).then(res=>res.json())
+        .then(data=>{
+            console.log(data)
+            dispatch({type:"UPDATE",payload:{following:data.following,followers:data.followers}})
+            localStorage.setItem("user",JSON.stringify(data))
+            setProfile((prevState)=>{
+                const newFollower = prevState.user.followers.filter(item=>item != data._id)
+                return {
+                    ...prevState,
+                    user:{
+                        ...prevState.user,
+                        followers:newFollower
+                    }
+                }
+            })
+            setShowFollow(!showFollow)
+        })
+    }
+
+
+
     if(!userProfile)
     return <WaveLoading color="#1e88e5" speed={1} />
     else
@@ -35,14 +94,31 @@ function Profile() {
                 <div><img style={{width:"160px", height:"160px", borderRadius:"80px", objectFit: "cover"}} 
                 src="https://images.unsplash.com/photo-1542103749-8ef59b94f47e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
                 alt="" /></div>
-                <div>
+                <div style={{justifyContent:"space-around" ,textAlign:"center"}}>
                     <h4>{userProfile?.user.name}</h4>
                     <h5>{userProfile?.user.email}</h5>
-                    <div style={{display:"flex",justifyContent:"space-between"}}>
-                    <div><h6>{userProfile?.posts?.length} posts &nbsp;</h6></div>
-                    <div><h6>100 followers &nbsp;</h6></div> 
-                    <div><h6>102 following &nbsp;</h6></div> 
+                    <div style={{display:"flex", justifyContent:"space-between", textAlign:"center", minWidth:"160px"}}>
+                        
+                                <div style={{display:"flex",flexDirection:"column",textAlign:"center"}}>
+
+                                <div style={{marginBottom:"-5px"}}><b>{userProfile?.posts?.length}</b></div>
+                                    <div>posts</div>
+
+                                </div>
+                                <div style={{display:"flex",flexDirection:"column",textAlign:"center"}}>
+
+                                    <div style={{marginBottom:"-5px"}}><b>{userProfile?.user?.followers?.length}</b></div>
+                                    <div>followers</div>
+
+                                </div>
+                                <div style={{display:"flex",flexDirection:"column",textAlign:"center"}}>
+
+                                    <div style={{marginBottom:"-5px"}}><b>{userProfile?.user?.following?.length}</b></div>
+                                    <div>following</div>
+
+                                </div>
                     </div>
+                    {showFollow?<button style={{margin:"5px", width:"100%",marginLeft:"0"}} className="btn #1e88e5 blue darken-1" onClick={()=>{followUser()}}>follow</button> : <button  style={{margin:"5px", width:"100%",marginLeft:"0"}} className="btn" onClick={()=>{unfollowUser()}}>unfollow</button>}
                 </div>
                 
             </div>

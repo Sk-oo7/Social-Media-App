@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from 'react'
 import {UserContext} from "../App"
 import { WaveLoading  } from 'react-loadingg';
 import M from "materialize-css"
+import { Link } from 'react-router-dom';
 
 function Post(item) {
 
@@ -117,7 +118,8 @@ function Post(item) {
     else return (
         <div className="card home-card" key={item.item._id}>
             
-                            <h5>{item.item.postedBy.name}</h5>
+                            
+                            {item.item.postedBy._id === state._id ? <Link to={"/profile"}><h5>{item.item.postedBy.name}</h5></Link> : <Link to={"/profile/"+item.item.postedBy._id}><h5>{item.item.postedBy.name}</h5></Link>}
                             <div className="card-image">
                                 <img alt="" src={item.item.photo} />
                             </div>
