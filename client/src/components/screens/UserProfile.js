@@ -21,6 +21,15 @@ function Profile() {
        })
     }, [])
 
+    useEffect(() => {
+        if(userProfile){
+        if(userProfile?.user.followers.some(follower=>follower === state._id))
+            setShowFollow(false)
+        else
+            setShowFollow(true)
+        }
+    })
+
     useEffect(()=>{
         var elems = document.querySelectorAll('.modal');
         M.Modal.init(elems,{startingTop:20,endingTop:20});
@@ -118,7 +127,7 @@ function Profile() {
 
                                 </div>
                     </div>
-                    {showFollow?<button style={{margin:"5px", width:"100%",marginLeft:"0"}} className="btn #1e88e5 blue darken-1" onClick={()=>{followUser()}}>follow</button> : <button  style={{margin:"5px", width:"100%",marginLeft:"0"}} className="btn" onClick={()=>{unfollowUser()}}>unfollow</button>}
+                    {showFollow?<button style={{margin:"5px", width:"100%",marginLeft:"0"}} className="btn #1e88e5 blue darken-1" onClick={()=>{followUser()}}>follow</button> : <button  style={{margin:"5px", width:"100%",marginLeft:"0"}} className="btn #1e88e5 blue darken-1" onClick={()=>{unfollowUser()}}>unfollow</button>}
                 </div>
                 
             </div>

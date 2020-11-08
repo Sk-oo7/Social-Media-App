@@ -43,12 +43,14 @@ function Profile() {
         <div style={{maxWidth:"80%", margin:"0 auto"}}>
             <div style={{display:"flex", justifyContent:"space-around", margin: "18px 0px",flexWrap:"wrap"
             }}>
-                <div><img style={{width:"160px", height:"160px", borderRadius:"80px", objectFit: "cover"}} 
+                <div>
+                    <img className= "circle responsive-img" style={{width:"160px", height:"160px", borderRadius:"80px", objectFit: "cover"}} 
                 src="https://images.unsplash.com/photo-1542103749-8ef59b94f47e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
                 alt="" /></div>
                 <div>
                     <center>
                     <h4>{state?.name}</h4>
+                    <h6>{state?.email}</h6>
                     </center>
                     <div style={{display:"flex",justifyContent:"space-between" , textAlign:"center", minWidth:"160px"}}>
 
@@ -87,7 +89,7 @@ function Profile() {
                                         <h5>{item.postedBy.name}<button className="btn-flat modal-close" onClick={()=>{deletePost(item._id)}} style={{float:"right"}}><i className="material-icons">delete</i></button></h5>
 
                                         <div className="card-image">
-                                            <img alt="" src={item.photo} />
+                                            <img className= "responsive-img" alt="" src={item.photo} />
                                         </div>
                                         <div className="card-content">
                                             <h6>{item.title}</h6>
