@@ -1,14 +1,12 @@
 import React, { useEffect, useState, useContext } from 'react'
-import CreatePost from"./CreatePost"
 import "../../App.css"
 import Post from '../Post';
 
-function Home() {
-
+function Explore() {
     const [data,setData] = useState([]);
 
     useEffect(()=>{
-                    fetch("/getsubpost",{
+                    fetch("/allpost",{
                     headers:{
                         "Authorization":"Bearer "+localStorage.getItem("jwt")
                     }
@@ -21,7 +19,6 @@ function Home() {
 
     return (
         <div className="home">
-            <CreatePost />
             {
                 data?.map(item=>
                     <Post item={item} key={item._id}/>
@@ -31,4 +28,4 @@ function Home() {
     )
 }
 
-export default Home
+export default Explore

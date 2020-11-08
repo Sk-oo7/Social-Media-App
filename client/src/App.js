@@ -7,6 +7,7 @@ import SignIn from "./components/screens/SignIn"
 import Signup from "./components/screens/Signup"
 import {initialState,reducer}  from"./reducers/userReducer"
 import UserProfile from "./components/screens/UserProfile"
+import Explore from './components/screens/Explore';
 
 
 export const UserContext = createContext();
@@ -40,6 +41,10 @@ const Routing=()=>{
 
         <Route path="/signin">
         <SignIn/>
+        </Route>
+
+        <Route path="/explore">
+        <Explore/>
         </Route>
 
         <Route path="/profile/:userid">

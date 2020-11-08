@@ -10,8 +10,9 @@ function Navbar() {
   const renderList =()=>{
     if(state){
       return [
-        <li><Link to="/profile">Profile</Link></li>,
-        <li><a className="btn #0d47a1 blue darken-4" onClick={()=>{
+        <li key="abc9"><Link to="/explore">Explore</Link></li>,
+        <li key="abc1"><Link to="/profile">Profile</Link></li>,
+        <li key="abc2"><a className="btn #0d47a1 blue darken-4" onClick={()=>{
           localStorage.clear()
           dispatch({type:"CLEAR"})
           history.push("/signin")
@@ -19,15 +20,16 @@ function Navbar() {
       ]
     }
     else{
-      return [<li><Link to="/signin">SignIn</Link></li>,
-      <li><Link to="/signup">Signup</Link></li>]
+      return [<li key="abc3"><Link to="/signin">SignIn</Link></li>,
+      <li key="abc4"><Link to="/signup">Signup</Link></li>]
     }
   }
   const renderList2 =()=>{
     if(state){
       return [
-        <li><Link to="/profile"><span className="blue-text text-darken-2">Profile</span></Link></li>,
-        <li><a className="btn #0d47a1 blue darken-4" onClick={()=>{
+        <li key="abc10"><Link to="/explore"><span className="blue-text text-darken-2">Explore</span></Link></li>,
+        <li key="abc5"><Link to="/profile"><span className="blue-text text-darken-2">Profile</span></Link></li>,
+        <li key="abc6"><a className="btn #0d47a1 blue darken-4" onClick={()=>{
           localStorage.clear()
           dispatch({type:"CLEAR"})
           history.push("/signin")
@@ -36,8 +38,8 @@ function Navbar() {
     }
     else{
       return [
-        <li><Link to="/signin"><span className="blue-text text-darken-2">SignIn</span></Link></li>,
-        <li><Link to="/signup"><span className="blue-text text-darken-2">SignUp</span></Link></li>
+        <li key="abc7"><Link to="/signin"><span className="blue-text text-darken-2">SignIn</span></Link></li>,
+        <li key="abc8"><Link to="/signup"><span className="blue-text text-darken-2">SignUp</span></Link></li>
     ]
     }
   }
