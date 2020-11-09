@@ -101,7 +101,7 @@ function Profile() {
             <div style={{display:"flex", justifyContent:"space-around", margin: "18px 0px",flexWrap:"wrap"
             }}>
                 <div><img style={{width:"160px", height:"160px", borderRadius:"80px", objectFit: "cover"}} 
-                src="https://images.unsplash.com/photo-1542103749-8ef59b94f47e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
+                src={userProfile.user.pic}
                 alt="" /></div>
                 <div style={{justifyContent:"space-around" ,textAlign:"center"}}>
                     <h4>{userProfile?.user.name}</h4>
