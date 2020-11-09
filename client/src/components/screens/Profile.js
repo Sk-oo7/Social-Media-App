@@ -1,10 +1,14 @@
 import React, { useEffect, useState, useContext } from 'react'
 import {UserContext} from "../../App"
 import M from "materialize-css"
+import { Avatar } from "@material-ui/core";
+import CameraAltRoundedIcon from "@material-ui/icons/CameraAltRounded";
 
 function Profile() {
     const [pics,setPics]=useState();
-    const {state}=useContext(UserContext);
+    const [image,setImage]=useState("");
+    const [url,setUrl]=useState("");
+    const {state,dispatch}=useContext(UserContext);
 
     useEffect(() => {
        fetch("/mypost",{
@@ -21,6 +25,34 @@ function Profile() {
         var elems = document.querySelectorAll('.modal');
         M.Modal.init(elems,{startingTop:20,endingTop:20});
     })
+
+useEffect(() => {
+    if(image){
+        const data = new FormData()
+        data.append("file",image)
+        data.append("upload_preset","fleet-app")
+        data.append("cloud_name","fleet")
+        fetch("	https://api.cloudinary.com/v1_1/fleet/image/upload",{
+            method:"post",
+            body:data
+        })
+        .then(res=>res.json())
+        .then(data=>{
+            setUrl(data.url)
+            console.log(data.url)
+            localStorage.setItem("user",JSON.stringify({...state,pic:data.url}))
+            dispatch({type:"UPDATE_PIC",payload:data.url})
+        })
+        .catch(err=>{
+            console.log(err)
+        })
+    }
+}, [image])
+
+    const uploadPic = (file) =>{
+        setImage(file)
+        
+    }
 
     const deletePost =(postId)=>{
         fetch(`/deletepost/${postId}`,{
@@ -41,12 +73,38 @@ function Profile() {
 
     return (
         <div style={{maxWidth:"80%", margin:"0 auto"}}>
-            <div style={{display:"flex", justifyContent:"space-around", margin: "18px 0px",flexWrap:"wrap"
-            }}>
+            <div style={{display:"flex", justifyContent:"space-around", margin: "18px 0px",flexWrap:"wrap"}}>
                 <div>
-                    <img className= "circle responsive-img" style={{width:"160px", height:"160px", borderRadius:"80px", objectFit: "cover"}} 
-                src="https://images.unsplash.com/photo-1542103749-8ef59b94f47e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
-                alt="" /></div>
+                    <Avatar className= "circle responsive-img" style={{width:"160px", height:"160px", borderRadius:"80px", objectFit: "cover"}} src={state?.pic} />
+                    <button
+                        className=" cam"
+                        style={{
+                            borderRadius: "50px",
+                            opacity: "0.9",
+                            backgroundColor: "rgba(255, 255, 255 ,0.8)",
+                            marginTop: "-40px",
+                            marginLeft: "120px",
+                            position: "absolute",
+                            border: "none",
+                            outline: "none",
+                            width: "31px",
+                            padding:"5px"
+                            }}
+                            disabled >
+                        <label htmlFor="file" style={{ width: "20px", height: "20px" }}>
+                            <CameraAltRoundedIcon
+                            style={{ width: "20px", height: "20px", color: "black" }}
+                            />
+                        </label>
+                        </button>
+                        <input
+                        type="file"
+                        id="file"
+                        className="file"
+                        style={{ display: "none" }}
+                        onChange={(e)=>{uploadPic(e.target.files[0])}}
+                        />                    
+                     </div>
                 <div>
                     <center>
                     <h4>{state?.name}</h4>
