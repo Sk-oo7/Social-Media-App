@@ -3,6 +3,7 @@ import {UserContext} from "../../App"
 import M from "materialize-css"
 import {useParams} from "react-router-dom"
 import { WaveLoading  } from 'react-loadingg';
+import { Avatar } from '@material-ui/core';
 
 function Profile() {
     const [userProfile,setProfile]=useState(null);
@@ -100,9 +101,7 @@ function Profile() {
         <div style={{maxWidth:"80%", margin:"0 auto"}}>
             <div style={{display:"flex", justifyContent:"space-around", margin: "18px 0px",flexWrap:"wrap"
             }}>
-                <div><img style={{width:"160px", height:"160px", borderRadius:"80px", objectFit: "cover"}} 
-                src={userProfile.user.pic}
-                alt="" /></div>
+                <div><Avatar className= "circle responsive-img" style={{width:"160px", height:"160px", borderRadius:"80px", objectFit: "cover"}} src={userProfile?.user?.pic} /></div>
                 <div style={{justifyContent:"space-around" ,textAlign:"center"}}>
                     <h4>{userProfile?.user.name}</h4>
                     <h5>{userProfile?.user.email}</h5>
