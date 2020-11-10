@@ -1,11 +1,17 @@
-import React, { useState,useContext } from 'react'
+import React, { useState,useContext, useEffect } from 'react'
 import { Link,useHistory } from 'react-router-dom'
 import {UserContext} from "../App"
 import "../App.css"
+import M from "materialize-css"
 
 function Navbar() {
   const history = useHistory();
   const {state,dispatch} = useContext(UserContext)
+
+  useEffect(() => {
+    var elems = document.querySelectorAll('.sidenav');
+    M.Sidenav.init(elems, {});
+  },[])
 
   const renderList =()=>{
     if(state){
@@ -27,9 +33,18 @@ function Navbar() {
   const renderList2 =()=>{
     if(state){
       return [
-        <li key="abc10"><Link to="/explore"><span className="blue-text text-darken-2">Explore</span></Link></li>,
-        <li key="abc5"><Link to="/profile"><span className="blue-text text-darken-2">Profile</span></Link></li>,
-        <li key="abc6"><a className="btn #0d47a1 blue darken-4" onClick={()=>{
+        <li><div className="user-view">
+      <div className="background">
+        <img style={{width:"500px"}} src="https://materializecss.com/images/office.jpg"/>
+      </div>
+      <a href="#user"><img className="circle" src={state?.pic}/></a>
+      <span className="name">{state?.name}</span>
+      <span className="email">{state?.email}</span>
+    </div></li>,
+      
+        <li key="abc10"><Link to="/explore" className="sidenav-close"><span className="blue-text text-darken-2">Explore</span></Link></li>,
+        <li key="abc5"><Link to="/profile"  className="sidenav-close"><span className="blue-text text-darken-2">Profile</span></Link></li>,
+        <li key="abc6"><a className="btn #0d47a1 blue darken-4 sidenav-close" onClick={()=>{
           localStorage.clear()
           dispatch({type:"CLEAR"})
           history.push("/signin")
@@ -43,27 +58,26 @@ function Navbar() {
     ]
     }
   }
-  const [show,setShow]=useState(false);
 
     return (
         <div>
-            <nav>
-              <div className="nav-wrapper dark blue darken-3">
-                <Link to={state? "/" : "/signin"} className="brand-logo center">Fleet</Link>
-                <Link className='sidenav-trigger right' to="#" data-target='' onClick={()=>setShow(!show)}><i className="material-icons">menu</i></Link>
-                {!show && <ul id="nav-mobile" className="right hide-on-med-and-down">
+
+            <nav className="dark blue darken-3">
+              <div className="nav-wrapper container">
+                <Link to={state? "/" : "/signin"} className="brand-logo">Fleet</Link>
+                <Link data-target="mobile-demo" className='sidenav-trigger' to="#" ><i className="material-icons">menu</i></Link>
+
+                <ul id="nav-mobile" className="right hide-on-med-and-down">
                   {renderList()}
-                </ul>}
+                </ul>
+   
               </div>
             </nav>
 
-            {show && <nav>
-              <div className="nav-wrapper white" style={{display:"flex",justifyContent:"space-around"}}>
-                <ul className="show-on-medium-and-down">
+                <ul className="sidenav" id="mobile-demo">
                 {renderList2()}
                 </ul>
-              </div>
-            </nav>}
+
         </div>
     )
 }
