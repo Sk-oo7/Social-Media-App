@@ -3,9 +3,11 @@ import {UserContext} from "../App"
 import { WaveLoading  } from 'react-loadingg';
 import M from "materialize-css"
 import { Link } from 'react-router-dom';
+import { Avatar } from '@material-ui/core';
 
 function Post(item) {
 
+    const [userProfile,setProfile]=useState(null);
     const [lcount,setLcount]=useState(item.item.likes?.length);
     const [showload,setShowload]=useState(true);
     const{state} = useContext(UserContext)
@@ -14,6 +16,21 @@ function Post(item) {
 
     const [data,setData] = useState([]);
     const [cmt,setCmt] = useState([]);
+
+    useEffect(() => {
+ 
+
+            fetch(`/user/${item.item.postedBy._id}`,{
+                headers:{
+                    "Authorization":"Bearer "+localStorage.getItem("jwt")
+                }
+            }).then(res=>res.json())
+            .then(result=>{
+             setProfile(result)
+            })
+
+     }, [])
+
     useEffect(()=>{
         setTimeout(()=>{
             setShowload(false)
@@ -112,14 +129,25 @@ function Post(item) {
         })
         cmt.push(text); 
   }
-
+ 
     if(showload)
         return <WaveLoading color="#1e88e5" speed={1} />
     else return (
         <div className="card home-card" key={item.item._id}>
             
                             
-                            {item.item.postedBy._id === state._id ? <Link to={"/profile"}><h5>{item.item.postedBy.name}</h5></Link> : <Link to={"/profile/"+item.item.postedBy._id}><h5>{item.item.postedBy.name}</h5></Link>}
+                            {item.item.postedBy._id === state?._id ?
+                            <Link to={"/profile"}>
+                               <div style={{display:"flex",padding:"10px" }}>
+                                <Avatar src={state?.pic}/>
+                            <h5 style={{margin:"8px 0 0 5px"}}> {item.item.postedBy.name}</h5></div> 
+                            </Link> : 
+                            <Link to={"/profile/"+item.item.postedBy._id}>
+                                <div style={{display:"flex",padding:"10px" }}>
+                                <Avatar src={userProfile?.user?.pic} />
+                                <h5 style={{margin:"8px 0 0 5px"}}>{item.item.postedBy.name}</h5></div>
+                                </Link>
+                            }
                             <div className="card-image">
                                 <img alt="" src={item.item.photo} />
                             </div>
