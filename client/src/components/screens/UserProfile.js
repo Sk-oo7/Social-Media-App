@@ -98,7 +98,7 @@ function Profile() {
     return <WaveLoading color="#1e88e5" speed={1} />
     else
     return (
-        <div style={{maxWidth:"80%", margin:"0 auto"}}>
+        <div style={{maxWidth:"80%", margin:"0 auto"}}  className="container">
             <div style={{display:"flex", justifyContent:"space-around", margin: "18px 0px",flexWrap:"wrap"
             }}>
                 <div><Avatar className= "circle responsive-img" style={{width:"160px", height:"160px", borderRadius:"80px", objectFit: "cover"}} src={userProfile?.user?.pic} /></div>
