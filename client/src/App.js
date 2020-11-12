@@ -8,6 +8,7 @@ import Signup from "./components/screens/Signup"
 import {initialState,reducer}  from"./reducers/userReducer"
 import UserProfile from "./components/screens/UserProfile"
 import Explore from './components/screens/Explore';
+import Reset from "./components/screens/Reset"
 
 
 export const UserContext = createContext();
@@ -22,6 +23,7 @@ const Routing=()=>{
       // history.push("/")
     }
     else{
+      if(!history.location.pathname.startsWith("/reset"))
       history.push("/signin")
     }
   },[])
@@ -50,6 +52,11 @@ const Routing=()=>{
         <Route path="/profile/:userid">
         <UserProfile/>
         </Route>
+
+        <Route path="/reset">
+        <Reset/>
+        </Route>
+
       </Switch>
   )
 }
