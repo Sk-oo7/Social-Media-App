@@ -6,7 +6,15 @@ const bcrypt =require('bcryptjs')
 const jwt =require('jsonwebtoken')
 const {JWT_SECRET}=require('../keys')
 const requireLogin =require("../middleware/requireLogin")
+const nodemailer = require("nodemailer")
+const sendgridTransport = require("nodemailer-sendgrid-transport")
 
+
+const transporter = nodemailer.createTransport(sendgridTransport({
+    auth:{
+        api_key:"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"
+    }
+}))
 
 // router.get("/protected",requireLogin,(req,res)=>{
 //     res.send("hello user")
@@ -32,6 +40,13 @@ router.post("/signup",(req,res)=>{
                 pic
             })
             user.save().then(user=>{
+                transporter.sendMail({
+                    to:user.email,
+                    from:"hiddnname0@gmail.com",
+                    subject:"SignUp Success",
+                    html:`<h1>Welcome to Fleet<h1><h2>Catchup with your nears and dears</h2><p>Hi ${user.name}, you just created a new account on Fleet. We hope you'll get best user experience.`
+
+                })
                 res.json({message:"saved successfully"})
             })
             .catch(err=>{
