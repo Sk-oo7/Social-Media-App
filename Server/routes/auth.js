@@ -8,6 +8,7 @@ const {JWT_SECRET}=require('../keys')
 const requireLogin =require("../middleware/requireLogin")
 const nodemailer = require("nodemailer")
 const sendgridTransport = require("nodemailer-sendgrid-transport")
+const crypto = require("crypto")
 
 
 const transporter = nodemailer.createTransport(sendgridTransport({
@@ -85,6 +86,35 @@ router.post("/signin",(req,res)=>{
         })
         .catch(err=>{
             console.log(err)
+        })
+    })
+})
+
+router.post("/reset-password",(req,res)=>{
+    crypto.randomBytes(32,(err,buffer)=>{
+        if(err)
+            console.log(err)
+        const token = buffer.toString("hex")
+        User.findOne({email:req.body.email})
+        .then(user=>{
+            if(!user){
+                return res.status(422).json({error:"User not found!"})
+            }
+            user.resetToken = token
+            user.expireToken = Date.now() + 900000
+            user.save().then(result=>{
+                transporter.sendMail({
+                    to:user.email,
+                    from:"hiddnname0@gmail.com",
+                    subject:"Reset Password",
+                    html:`
+                    <h2>Hi ${user.name}, you just requested to reset your password on Fleet.</h2>
+                    <p>Click <a href="http://localhost:3000/reset/${token}">here</a> to reset your password.</p>
+                    <p>This link will expire in 15 minutes.</p>
+                    `
+                })
+                res.json({message:"Check your email"})
+            })
         })
     })
 })
