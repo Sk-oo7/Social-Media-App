@@ -9,6 +9,7 @@ import {initialState,reducer}  from"./reducers/userReducer"
 import UserProfile from "./components/screens/UserProfile"
 import Explore from './components/screens/Explore';
 import Reset from "./components/screens/Reset"
+import Newpassword from "./components/screens/Newpassword"
 
 
 export const UserContext = createContext();
@@ -53,8 +54,12 @@ const Routing=()=>{
         <UserProfile/>
         </Route>
 
-        <Route path="/reset">
+        <Route exact path="/reset">
         <Reset/>
+        </Route>
+
+        <Route path="/reset/:token">
+        <Newpassword/>
         </Route>
 
       </Switch>

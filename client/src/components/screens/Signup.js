@@ -50,6 +50,8 @@ function SignUp() {
                 <button className="btn waves-effect waves-light blue darken-3" onClick={postData}>SignIn
                 </button>
                 <h5><Link to="/signin">Have an Account?</Link></h5>
+                <h5><Link to="/reset">Forgot Password?</Link></h5>
+
             </div>
         </div>
     )
